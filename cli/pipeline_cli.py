@@ -19,7 +19,7 @@ def mario():
 
 
 @click.command()
-@click.option('-u', '--cdap_instance', default='app', help='CDAP instance to connect to.')
+@click.option('-u', '--cdap_instance', default=CDAP_INSTANCE_URL, help='CDAP instance to connect to.')
 @click.option('-ns', '--namespace', default='default', help='Namespace to export from. If not specified, \
                                                             the default namespace will be used.')
 @click.option('-t', '--type', default='app', help='Pipeline to export.  Default is to export all pipelines.')

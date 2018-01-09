@@ -18,6 +18,6 @@ setup(
      ],
     entry_points='''
          [console_scripts]
-         mario2=pycdap.cli.pipeline_cli:cli
+         piper=pycdap.cli.pipeline_cli:cli
      '''
 )

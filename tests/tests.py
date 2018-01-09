@@ -45,7 +45,7 @@ import json
 # p.export(namespace='NS1')         # Exports all pipelines for namespace NS1
 # p.export(n='default', p='app')       # Exports all the deployed pipelines for namespace NS1
 # p.export(ns='default', type='app')    # Exports all the draft pipelines for namespace NS1
-
+#
 # p.export(ns='default', type='all')
 # p.export(ns='default', type='all', o='.')
 # p.export(ns='default', type='app', o='/tmp')
