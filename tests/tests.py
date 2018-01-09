@@ -2,15 +2,15 @@ from Pipeline import Pipeline
 import json
 
 
-# p = Pipeline('http://Vetons-MBP.home:11015')
-# p.connect()
-# print '\n====================================='
-# print 'url: {}'.format(p.url)
-# print 'default_uri: {}'.format(p.default_uri)
-# print 'status: {}'.format(p.status)
-# print 'version: {}'.format(p.version)
-# print 'namespaces: {}'.format(p.namespaces)
-# print '=====================================\n'
+p = Pipeline('http://Vetons-MBP.home:11015')
+p.connect()
+print '\n====================================='
+print 'url: {}'.format(p.url)
+print 'default_uri: {}'.format(p.default_uri)
+print 'status: {}'.format(p.status)
+print 'version: {}'.format(p.version)
+print 'namespaces: {}'.format(p.namespaces)
+print '=====================================\n'
 
 # print dir(p)
 # print p._Pipeline__check_namespaces('default', 'PRGX')
@@ -49,3 +49,4 @@ import json
 # p.export(ns='default', type='all')
 # p.export(ns='default', type='all', o='.')
 # p.export(ns='default', type='app', o='/tmp')
+

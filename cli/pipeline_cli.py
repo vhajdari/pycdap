@@ -1,4 +1,5 @@
-from Pipeline import Pipeline
+# from Pipeline import Pipeline
+import Pipeline
 import click
 
 CDAP_INSTANCE_URL = 'http://localhost:11015'
@@ -14,7 +15,7 @@ def progressBar(iterable):
 
 
 @click.group()
-def mario():
+def piper():
     pass
 
 
@@ -69,11 +70,11 @@ def status(cdap_instance):
     click.echo('Namespaces: {}'.format(p.namespaces))
 
 
-mario.add_command(export)
-mario.add_command(export_all)
-mario.add_command(list)
-mario.add_command(status)
+piper.add_command(export)
+piper.add_command(export_all)
+piper.add_command(list)
+piper.add_command(status)
 
 
 if __name__ == '__main__':
-    mario()
+    piper()
