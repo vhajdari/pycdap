@@ -11,7 +11,9 @@ use the Pipeline module from the command line for interacting with your CDAP ins
 To install pycdap run the setup.py installer from within the pycdap directory. 
 The installer will create an executable named **piper**.
 ```bash
-    setup.py install
+    pip install .
+    -- or --
+    python setup.py install
 ```
 
 **piper** allows you to interact with your CDAP instance via the console.
