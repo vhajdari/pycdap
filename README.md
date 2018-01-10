@@ -56,7 +56,7 @@ piper export -u http://10.30.20.123:11015
 * -u, --cdap_instance ... CDAP instance to connect to. Defaults to `http://localhost:11015`
 
 #### Usage Examples:
-```bash
+```commandline
 piper export -ns NS1                              #export all pipeline types from the `NS1` namespace 
 piper export -u http://10.30.20.123:11015 -t all  #export all pipeline types from the `default` namespace on a remote CDAP instance.
 piper export -ns NS1 -t drafts -o ~/cdap/drafts   #export draft pipeline from the `NS1 namespace and write output to /home/username/cdap/drafts
