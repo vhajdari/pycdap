@@ -167,19 +167,19 @@ class Pipeline:
         """
         ts = datetime.now().strftime("%Y%m%d-%H.%M.%S")
 
-        log.debug('path argument = {}'.format(path))
+        # log.debug('path argument = {}'.format(path))
 
         if not path:
             path = os.getcwd()
         else:
             path = os.path.expanduser(path)
-            log.debug('resolved path = {}'.format(path))
+            # log.debug('resolved path = {}'.format(path))
 
-        file_name = name + '.json'
+        file_name = name + '-' + self.version + '.json'
         directory = path + '/' + self.output_dir + '_' + ts + '/' + namespace
         file_path = directory + '/' + file_name
 
-        log.debug('File path = {}'.format(file_path))
+        # log.debug('File path = {}'.format(file_path))
 
         if not os.path.exists(directory):
             os.makedirs(directory)
