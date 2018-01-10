@@ -1,5 +1,4 @@
-# from Pipeline import Pipeline
-import Pipeline
+from Pipeline import Pipeline
 import click
 
 CDAP_INSTANCE_URL = 'http://localhost:11015'

@@ -18,6 +18,6 @@ setup(
      ],
     entry_points='''
          [console_scripts]
-         piper=pycdap.cli.pipeline_cli:cli
+         piper=cli.pipeline_cli:piper
      '''
 )

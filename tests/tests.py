@@ -1,4 +1,5 @@
 from Pipeline import Pipeline
+# import Pipeline
 import json
 
 
@@ -6,7 +7,7 @@ p = Pipeline('http://Vetons-MBP.home:11015')
 p.connect()
 print '\n====================================='
 print 'url: {}'.format(p.url)
-print 'default_uri: {}'.format(p.default_uri)
+# print 'default_uri: {}'.format(p.default_uri)
 print 'status: {}'.format(p.status)
 print 'version: {}'.format(p.version)
 print 'namespaces: {}'.format(p.namespaces)
