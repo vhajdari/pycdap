@@ -61,12 +61,13 @@ def list(cdap_instance):
 @click.option('-u', '--cdap_instance', default=CDAP_INSTANCE_URL, help='CDAP instance to connect to.')
 def status(cdap_instance):
     ''' Dispay the status of the CDAP instance '''
-    click.echo('CDAP Status:')
+    click.secho(' CDAP Status ', bg='blue', fg='white', bold=True)
     p = Pipeline(cdap_instance)
     p.connect()
-    click.echo('Status:' + p.status)
-    click.echo('Version:' + p.version)
-    click.echo('Namespaces: {}'.format(p.namespaces))
+    click.echo('CDAP Host:   ' + p.url)
+    click.echo('Status:\t     ' + p.status)
+    click.echo('Version:     ' + p.version)
+    click.echo('Namespaces:  {}'.format(', '.join(p.namespaces)))
 
 
 piper.add_command(export)
