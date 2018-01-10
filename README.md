@@ -11,29 +11,28 @@ use the Pipeline module from the command line for interacting with your CDAP ins
 To install pycdap run the setup.py installer from within the pycdap directory. 
 The installer will create an executable named **piper**.
 ```bash
-    pip install .
-    -- or --
-    python setup.py install
+pip install .
+-- or --
+python setup.py install
 ```
 
 **piper** allows you to interact with your CDAP instance via the console.
 
 ## CLI Usage
-
 To list the available sub-commands for **piper** use the `--help` argument.  
 Each sub command has usage information available.
-``` bash
+``` commandline
 piper --help
 piper export --help 
 ``` 
 ### List Pipelines
 Print out a listing of all the available namespaces and pipelines contained within.
-``` bash
+``` commandline
 piper list
 ``` 
 ### Status of CDAP Instance
 To get the version, status and the namespaces available on a CDAP instance, execute:
-``` bash
+``` commandline
 piper status
 -- or --
 piper status -u http://10.30.20.123:11015 
@@ -42,7 +41,7 @@ piper status -u http://10.30.20.123:11015
 There are two export options available ` export ` and ` export_all `.  
 The former option takes key/word arguments, whereas the later exports all 
 namespaces and all the pipelines per namespace.
-``` bash
+``` commandline
 piper export -ns default -t draft -o /tmp/my_pipelines
 piper export -u http://10.30.20.123:11015 
 ``` 
