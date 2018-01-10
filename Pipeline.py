@@ -333,30 +333,25 @@ class Pipeline:
         log.debug('Printing out a listing of all the namespaces and pipelines')
         namespaces = self.namespaces
         namespaces.sort()
-        print Colors.GREEN + 'Namespaces: ({})'.format(namespaces.__len__())
-        print Colors.ENDC
+        print Colors.GREEN + Colors.BOLD + 'Namespaces: ({})'.format(namespaces.__len__()) + Colors.ENDC
         for i in namespaces:
             n = namespaces.index(i) + 1
-            print '\t {} - {}'.format(n, i)
+            print '\t{} - {}'.format(n, i)
 
-        print Colors.RED + 'Drafts:' + Colors.ENDC
+        print Colors.RED + Colors.BOLD + 'Drafts:' + Colors.ENDC
         drafts = self.drafts()
         for pipelines in drafts:
-            print Colors.BOLD
-            print '   Namespace = {}'.format(pipelines['namespace'])
-            print Colors.ENDC
+            print '   Namespace: {}'.format(pipelines['namespace'])
             pipeline = pipelines['drafts'][0]
 
             for name in pipeline:
                 n = pipeline.index(name) + 1
                 print '     {} - {}'.format(n, name['pipeline_name'])
 
-        print Colors.BLUE + 'Apps:' + Colors.ENDC
+        print Colors.BLUE + Colors.BOLD + 'Apps:' + Colors.ENDC
         apps = self.apps()
         for pipelines in apps:
-            print Colors.BOLD
-            print '   Namespace = {}'.format(pipelines['namespace'])
-            print Colors.ENDC
+            print '   Namespace: {}'.format(pipelines['namespace'])
             pipeline = pipelines['apps']
 
             for name in pipeline:
