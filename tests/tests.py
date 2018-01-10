@@ -1,5 +1,4 @@
-from Pipeline import Pipeline
-# import Pipeline
+from pycdap import Pipeline
 import json
 
 
@@ -19,6 +18,7 @@ print '=====================================\n'
 
 # === LIST ===
 # p.list()
+# print json.dumps(p.list('json'), indent=2, sort_keys=True)
 
 # === APPS ===
 #apps = c.apps()

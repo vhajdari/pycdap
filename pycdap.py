@@ -138,13 +138,10 @@ class Pipeline:
         :param pipeline_type:
         :return:
         """
-
         for i in data:
             ns = i.get('namespace')
 
-            if pipeline_type == 'drafts':
-                pipelines = i.get(pipeline_type)[0]
-            elif pipeline_type == 'apps':
+            if pipeline_type in ('drafts', 'apps'):
                 pipelines = i.get(pipeline_type)
             else:
                 log.info('ERROR.  Type can be either `apps` or drafts')
@@ -225,16 +222,21 @@ class Pipeline:
                     # print '`{}` is valid'.format(i)
                     valid_namespaces.append(i)
                 else:
-                    log.info('This selection {} is not in the available namespaces. Terminating.'.format(ns))
+                    log.info('ERROR: This selection {} is not in the available namespaces. Terminating.'.format(ns))
                     exit(-1)
 
             # provided argument(s) is/are valid, return the valid_namespaces list:
             log.debug('The namespace selection {} is valid.'.format(valid_namespaces))
             return valid_namespaces
 
-    # Get the draft pipelines -- this is NOT namespace specific
-    # will retrieve the drafts in ALL namespaces
     def drafts(self, *namespaces):
+        """
+        Get the draft pipelines -- this is NOT namespace specific
+        Will retrieve the drafts in ALL namespaces
+
+        :param namespaces:
+        :return:
+        """
         valid_ns = self.__check_namespaces(*namespaces)
         log.debug('drafts.valid_ns %s' % valid_ns)
         drafts_list = []
@@ -246,7 +248,6 @@ class Pipeline:
             # get all the drafts per namespace
             ns_drafts = {'namespace': namespace, 'drafts': []}
             pipelines = drafts_json.get('property').get('hydratorDrafts').get(namespace)
-            draft_pipeline = []
 
             for k, v in pipelines.iteritems():
                 name = v.get('name')
@@ -256,16 +257,13 @@ class Pipeline:
                 self.config['config'] = v.get('config')
                 self.config['artifact_type'] = {'draft': {'id': k}}
                 pipeline_json = json.dumps(self.config)
-                draft_pipeline.append({
+                ns_drafts['drafts'].append({
                     'pipeline_name': name,
                     'pipeline_json': pipeline_json
                 })
 
-            ns_drafts['drafts'].append(draft_pipeline)
             drafts_list.append(ns_drafts)
 
-        # print json.dumps(drafts, sort_keys=True, indent=4)
-        # return json.dumps(drafts, indent=4)
         return drafts_list
 
     def apps(self, *namespaces):
@@ -301,7 +299,6 @@ class Pipeline:
                         self.config['artifact'] = app.get('artifact')
                         self.config['artifact_type'] = 'deployed'
                         self.config['config'] = json.loads(app.get('configuration'))
-
                         pipeline_json = json.dumps(self.config)
                         pipelines.append({
                             'pipeline_name': name,
@@ -324,41 +321,44 @@ class Pipeline:
         log.debug('Retrieving configuration for deployed pipeline: {}'.format(app_name))
         return self.__get(self.url + self.__namespaces + '/' + namespace + self.__apps + '/' + app_name)
 
-    def list(self):
+    def list(self, output_format=None):
         """
         Print out a listing of all the namespaces and the pipelines contained within
 
         :return:
         """
-        log.debug('Printing out a listing of all the namespaces and pipelines')
+        log.debug('Listing of all the namespaces and pipelines')
         namespaces = self.namespaces
         namespaces.sort()
-        print Colors.GREEN + Colors.BOLD + 'Namespaces: ({})'.format(namespaces.__len__()) + Colors.ENDC
-        for i in namespaces:
-            n = namespaces.index(i) + 1
-            print '\t{} - {}'.format(n, i)
 
-        print Colors.RED + Colors.BOLD + 'Drafts:' + Colors.ENDC
-        drafts = self.drafts()
-        for pipelines in drafts:
-            print '   Namespace: {}'.format(pipelines['namespace'])
-            pipeline = pipelines['drafts'][0]
+        if output_format == 'json':
+            #return output formatted in JSON
+            pipelines = self.drafts() + self.apps()
+            return pipelines
 
-            for name in pipeline:
-                n = pipeline.index(name) + 1
-                print '     {} - {}'.format(n, name['pipeline_name'])
+        else:
+            print Colors.GREEN + Colors.BOLD + 'Namespaces: ({})'.format(namespaces.__len__()) + Colors.ENDC
+            for i in namespaces:
+                n = namespaces.index(i) + 1
+                print '\t{} - {}'.format(n, i)
 
-        print Colors.BLUE + Colors.BOLD + 'Apps:' + Colors.ENDC
-        apps = self.apps()
-        for pipelines in apps:
-            print '   Namespace: {}'.format(pipelines['namespace'])
-            pipeline = pipelines['apps']
+            print Colors.RED + Colors.BOLD + 'Drafts:' + Colors.ENDC
+            for pipelines in self.drafts():
+                print '   Namespace: {}'.format(pipelines['namespace'])
+                pipeline = pipelines['drafts']
 
-            for name in pipeline:
-                n = pipeline.index(name) + 1
-                print '     {} - {}'.format(n, name.get('pipeline_name'))
+                for name in pipeline:
+                    n = pipeline.index(name) + 1
+                    print '     {} - {}'.format(n, name['pipeline_name'])
 
-        pass
+            print Colors.BLUE + Colors.BOLD + 'Apps:' + Colors.ENDC
+            for pipelines in self.apps():
+                print '   Namespace: {}'.format(pipelines['namespace'])
+                pipeline = pipelines['apps']
+
+                for name in pipeline:
+                    n = pipeline.index(name) + 1
+                    print '     {} - {}'.format(n, name.get('pipeline_name'))
 
     def export(self, **kwargs):
         """
@@ -396,6 +396,8 @@ class Pipeline:
             exit(-1)
 
         if kwargs.__len__() <= 3:
+            # keyword arguments can be provided in a verity of ways
+            # for user convenience a number of aliases have been provided
             namespace_alias = ('n', 'ns', 'namespace')
             pipeline_alias = ('p', 'pipeline', 'pipelines', 'type')
             pipeline_apps_alias = ('app', 'apps', 'deployed')

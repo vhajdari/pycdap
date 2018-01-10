@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div id="pipelines">
+    <!--<p>You have <span class="badge">{{count}}</span> pipelines.-->
+    <!--<button id="hideBtn">Show/Hide Pipelines</button>-->
+    <!--</p>-->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pipelineType">Deployed Pipelines {{count}}</div>
+                <ul class="list-group">
+                    {% for a in apps%}
+                    <span class="namespace">Namespace: {{a.namespace}} </span>
+                    {% set counter = 1 %}
+                    {% for pipeline in a.apps%}
+                    <li class="list-group-item">
+                        {{ counter + loop.index0 }}.  {{pipeline.pipeline_name}}
+                    </li>
+                    {% endfor %}
+                    {% endfor %}
+                </ul>
+                <div class="pipelineType">Draft Pipelines</div>
+                <ul class="list-group">
+                    {% for d in drafts%}
+                    <span class="namespace">Namespace: {{d.namespace}} </span>
+                    {% set counter = 1 %}
+                    {% for pipeline in d.drafts%}
+                    <li class="list-group-item">
+                        {{ counter + loop.index0 }}.  {{pipeline.pipeline_name}}
+                    </li>
+                    {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

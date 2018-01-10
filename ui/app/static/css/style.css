@@ -1,0 +1,18 @@
+.heading{
+    font-size: 40px;
+    margin-left: 10px;
+}
+
+li[status="done"] {
+    background-color: rgba(204, 255, 204, 0.28);
+    /*display: none;*/
+}
+.pipelineType{
+    font-size: 24px;
+    margin-left: 5px;
+}
+.namespace{
+    font-size: 18px;
+    color: blue;
+    margin-left: 5px;
+}

@@ -14,7 +14,13 @@ setup(
     description='CDAP python library for exporting pipelines',
     install_requires=[
         'Click',
-        'requests'
+        'requests',
+        'Flask',
+        'Jinja2',
+        'MarkupSafe',
+        'Werkzeug',
+        'itsdangerous',
+        'wsgiref'
      ],
     entry_points='''
          [console_scripts]
