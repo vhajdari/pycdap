@@ -225,11 +225,11 @@ class Pipeline:
                     # print '`{}` is valid'.format(i)
                     valid_namespaces.append(i)
                 else:
-                    log.info('Your selection {} is not in the available namespaces. Terminating.'.format(ns))
+                    log.info('This selection {} is not in the available namespaces. Terminating.'.format(ns))
                     exit(-1)
 
             # provided argument(s) is/are valid, return the valid_namespaces list:
-            log.info('Your selection {} is valid.'.format(valid_namespaces))
+            log.debug('The namespace selection {} is valid.'.format(valid_namespaces))
             return valid_namespaces
 
     # Get the draft pipelines -- this is NOT namespace specific
