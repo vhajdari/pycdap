@@ -2,7 +2,8 @@ from pycdap import Pipeline
 import json
 
 
-p = Pipeline('http://Vetons-MBP.home:11015')
+# p = Pipeline('http://Vetons-MBP.home:11015')
+p = Pipeline()
 p.connect()
 print '\n====================================='
 print 'url: {}'.format(p.url)
@@ -11,6 +12,12 @@ print 'status: {}'.format(p.status)
 print 'version: {}'.format(p.version)
 print 'namespaces: {}'.format(p.namespaces)
 print '=====================================\n'
+
+p.export(ns='foo')
+# p.export()
+
+# my_pipeline = '/Users/vetoni/Desktop/pipelines/Test1-cdap-data-pipeline.json'
+# p.upload('foo', '111', my_pipeline)
 
 # print dir(p)
 # print p._Pipeline__check_namespaces('default', 'PRGX')

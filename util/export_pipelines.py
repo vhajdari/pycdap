@@ -22,6 +22,7 @@ host = 'localhost'
 port = '11015'
 cdap = 'http://' + host + ':' + port
 namespaces = '/v3/namespaces'
+version = '/v3/version'
 drafts = '/v3/configuration/user'
 p = {'name': '', 'description': '', 'artifact': '', 'config': ''}
 output = 'Pipelines'
@@ -32,6 +33,9 @@ def getJSON(url):
     d = r.json()
     return d  # returns a dict
 
+def getVersion():
+    ver = getJSON(cdap + version).get('version')
+    return ver
 
 # Example of an App collection endpoint
 # http://localhost:11015/v3/namespaces/default/apps
@@ -70,6 +74,7 @@ def exportPipeline(ns, id, data):
 
 # Get the draft pipelines -- this is NOT namespace specific
 # will retrieve the drafts in ALL namespaces
+cdap_version = getVersion()
 drafts = getDrafts()
 
 # loop through all namespaces
@@ -81,14 +86,17 @@ for namespace in getNamespaces():
 
     # get all the drafts per namespace
     d = drafts.get('property').get('hydratorDrafts').get(ns)
-    name = d.itervalues().next().get('name')
-    p['name'] = name
-    p['artifact'] = d.itervalues().next().get('description')
-    p['artifact'] = d.itervalues().next().get('artifact')
-    p['config'] = d.itervalues().next().get('config')
-    spec = json.dumps(p)
-    # log.debug('Draft Pipeline: %s', spec)
-    exportPipeline(ns, name, spec)
+    if not d:
+        log.info('There are no draft pipelines in namespace: {}'.format(ns))
+    else:
+        name = d.itervalues().next().get('name')
+        p['name'] = name
+        p['artifact'] = d.itervalues().next().get('description')
+        p['artifact'] = d.itervalues().next().get('artifact')
+        p['config'] = d.itervalues().next().get('config')
+        spec = json.dumps(p)
+        # log.debug('Draft Pipeline: %s', spec)
+        exportPipeline(ns, name + '-DRAFT-' + cdap_version, spec)
 
     # get the deployed pipelines in this namespace
     for i in getApps(ns):
@@ -106,4 +114,4 @@ for namespace in getNamespaces():
                 p['artifact'] = app.get('artifact')
                 p['config'] = json.loads(app.get('configuration'))
                 spec = json.dumps(p, sort_keys=True, indent=4)
-                exportPipeline(ns, id, spec)
+                exportPipeline(ns, id + '-APP-' + cdap_version, spec)

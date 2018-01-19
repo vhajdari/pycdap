@@ -244,25 +244,30 @@ class Pipeline:
 
         # loop through all namespaces
         for namespace in valid_ns:
-            # log.debug('Namespace: %s', namespace)
             # get all the drafts per namespace
             ns_drafts = {'namespace': namespace, 'drafts': []}
             pipelines = drafts_json.get('property').get('hydratorDrafts').get(namespace)
 
-            for k, v in pipelines.iteritems():
-                name = v.get('name')
-                self.config['name'] = name
-                self.config['artifact'] = v.get('description')
-                self.config['artifact'] = v.get('artifact')
-                self.config['config'] = v.get('config')
-                self.config['artifact_type'] = {'draft': {'id': k}}
-                pipeline_json = json.dumps(self.config)
-                ns_drafts['drafts'].append({
-                    'pipeline_name': name,
-                    'pipeline_json': pipeline_json
-                })
-
-            drafts_list.append(ns_drafts)
+            # if there are no drafts then skip
+            if not pipelines:
+                log.debug('There are no draft pipelines in namespace: {}'.format(namespace))
+                continue
+            else:
+                log.info('draft pipelines: {}'.format(pipelines))
+                for k, v in pipelines.iteritems():
+                    log.info('key : {}, val: {}'.format(k,v))
+                    name = v.get('name')
+                    self.config['name'] = name
+                    self.config['artifact'] = v.get('description')
+                    self.config['artifact'] = v.get('artifact')
+                    self.config['config'] = v.get('config')
+                    self.config['artifact_type'] = {'draft': {'id': k}}
+                    pipeline_json = json.dumps(self.config)
+                    ns_drafts['drafts'].append({
+                        'pipeline_name': name,
+                        'pipeline_json': pipeline_json
+                    })
+                drafts_list.append(ns_drafts)
 
         return drafts_list
 
@@ -459,3 +464,31 @@ class Pipeline:
                     self.__save(drafts, 'drafts', dir)
             else:
                 pass
+
+    def upgrade(self, pipeline):
+        pass
+
+    def upload(self, namespace, pipeline_name, file_path):
+        # url = http://localhost:11015/v3/namespaces/default/apps/The_Name_of_the_Pipeline
+        url = self.url + self.__namespaces + '/' + namespace + self.__apps + '/' + pipeline_name
+        headers = {'Content-type': 'application/json'}
+
+        # TODO Check if the namespace exists
+        log.info(url)
+        log.info(pipeline_name)
+        with open(file_path, 'r') as f:
+            log.info('uploading Pipeline: {}'.format(file_path))
+            data = f.read()
+
+        r = requests.put(url, data=data, headers=headers)
+        log.info(url)
+        log.info(headers)
+        log.info(pipeline_name)
+        # log.info(data)
+
+        log.info(r.status_code)
+        log.info(r.headers)
+        log.info(r.history)
+        # log.info(r.json())
+
+        pass
